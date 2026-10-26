@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Birthday Bliss | Signature Celebration Planner</title>
+<style>
+:root{--bg:#08090b;--panel:rgba(17,18,22,.85);--gold:#f3d88d;--text:#f8f7f3;--muted:#aaa8a1;--line:rgba(216,177,92,.18);--green:#7bc6a4;--red:#ff3b30;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;overflow-x:hidden;overflow-wrap:anywhere;background:radial-gradient(ellipse at 50% -20%,#292318,var(--bg) 46%,#050506);color:var(--text);font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;min-height:100vh}
+button,input,select,textarea{font:inherit}
+.app{width:100%;max-width:1200px;margin:0 auto;padding:20px 14px 40px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:#08090b;z-index:10}
+img,svg,table{max-width:100%}
+.card,.topbar,.hero,.sidebar,.tab{background:var(--panel);border:1px solid var(--line);border-radius:18px}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 20px;flex-wrap:wrap}
+.brand b{letter-spacing:.2em;font-size:12px;color:var(--gold)}.brand div div{color:var(--muted);font-size:11px}
+.btn{border:1px solid rgba(216,177,92,.3);border-radius:12px;background:rgba(255,255,255,.03);color:var(--text);padding:10px 14px;cursor:pointer;font-weight:600}
+.btn:hover{border-color:rgba(216,177,92,.6)}
+.btn.gold{background:linear-gradient(135deg,#bf953f,#fcf6ba 40%,#b38728 70%,#aa771c);color:#17120b;border:0}
+.btn.del{border-color:rgba(255,59,48,.4);background:rgba(255,59,48,.08);color:#ffc1bb;padding:8px 11px}
+.hero{margin-top:18px;padding:30px 24px}
+.eyebrow{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-weight:700}
+.hero h1{margin:10px 0;font-size:clamp(2.2rem,5vw,3.8rem);line-height:1;letter-spacing:-.04em}
+.hero h1 em{font-family:Georgia,serif;font-weight:500;color:var(--gold)}
+.hero p{color:#d8d5cf;max-width:640px;line-height:1.6}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.note{color:var(--muted);font-size:.88rem;margin-top:14px}
+.layout{margin-top:18px;display:grid;grid-template-columns:250px minmax(0,1fr);gap:18px;align-items:start}
+.sidebar{padding:14px;position:sticky;top:calc(env(safe-area-inset-top,0px) + 12px)}
+.nav{display:flex;flex-direction:column;gap:6px}
+.nav button{background:none;border:1px solid transparent;color:var(--text);text-align:left;padding:11px;border-radius:12px;cursor:pointer;font-weight:600}
+.nav button.active,.nav button:hover{background:rgba(216,177,92,.08);border-color:var(--line)}
+.tab{padding:20px;min-height:300px}.hidden{display:none}
+.head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,.08)}
+h2{margin:0;font-size:1.6rem;letter-spacing:-.03em}h3{margin:0 0 10px;color:var(--gold);font-size:1.05rem}
+.muted{color:var(--muted);font-size:.94rem;margin-top:4px}
+.pill{border-radius:99px;padding:6px 12px;background:rgba(123,198,164,.12);border:1px solid rgba(123,198,164,.3);color:var(--green);font-size:.82rem;font-weight:700;white-space:nowrap}
+.metrics,.grid2,.split{display:grid;gap:14px}.metrics{grid-template-columns:repeat(3,1fr);margin-bottom:16px}.grid2{grid-template-columns:1fr 1fr}.split{grid-template-columns:1.2fr .8fr}
+.box{background:rgba(255,255,255,.025);border:1px solid var(--line);border-radius:14px;padding:16px;margin-top:14px}
+.metrics .box{margin:0}.box small{display:block;color:var(--muted);text-transform:uppercase;letter-spacing:.12em;font-size:.72rem;margin-bottom:6px}
+.box strong{font-size:1.8rem;letter-spacing:-.03em}
+.box.over{border-color:rgba(255,59,48,.45);background:rgba(255,59,48,.05)}.over .alert{color:var(--red)}
+.field{display:flex;flex-direction:column;gap:6px}.field.full{grid-column:1/-1}
+label.l{text-transform:uppercase;letter-spacing:.12em;font-size:.72rem;color:var(--muted);font-weight:700}
+input,select,textarea{width:100%;border:1px solid rgba(255,255,255,.1);background:rgba(16,17,21,.9);color:var(--text);border-radius:10px;padding:10px 12px;outline:none}
+input:focus,select:focus,textarea:focus{border-color:rgba(216,177,92,.6)}
+textarea{min-height:100px;resize:vertical}
+.item{display:flex;gap:8px;flex-wrap:wrap;align-items:center;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05);border-radius:12px;padding:10px;margin-bottom:8px}
+.item input,.item select{flex:1 1 110px;min-width:100px;width:auto}
+.item input[type=checkbox]{flex:0 0 18px;min-width:18px;width:18px;height:18px;accent-color:var(--gold)}
+.item .grow{flex:2 1 180px}.item .txt{flex:1 1 160px}.phase{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);font-weight:700}
+.empty{color:var(--muted);border:1px dashed rgba(255,255,255,.1);border-radius:12px;padding:14px}
+.step{display:flex;gap:10px;padding:10px;border-radius:10px;background:rgba(255,255,255,.02);margin-top:8px;line-height:1.5}.step:before{content:"";width:8px;height:8px;border-radius:50%;background:var(--gold);margin-top:7px;flex:none}
+.ttl{font-family:Georgia,serif;font-size:1.9rem;margin:8px 0}
+.saved{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px;border:1px solid var(--line);border-radius:12px;margin-bottom:8px}
+.saved span{color:var(--muted);font-size:.82rem}
+.toast{position:fixed;right:16px;bottom:calc(env(safe-area-inset-bottom,0px) + 18px);background:#0b0c0f;border:1px solid var(--line);border-radius:12px;padding:12px 14px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:9}
+.toast.show{opacity:1}
+@media(max-width:900px){.layout,.metrics,.grid2,.split{grid-template-columns:1fr}.sidebar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;padding:8px;border-radius:14px;background:rgba(17,18,22,.97)}.nav{flex-direction:row;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;gap:6px}.nav::-webkit-scrollbar{display:none}.nav button{white-space:nowrap;flex:0 0 auto;padding:10px 14px}}
+@media(max-width:640px){.app{padding:12px 10px 32px}.hero{padding:22px 16px;border-radius:16px}.tab{padding:14px;border-radius:16px}.topbar{padding:12px 14px}.topbar .row{width:100%}.topbar .row .btn{flex:1 1 140px}.head{flex-direction:column}.box{padding:12px}.box strong{font-size:1.5rem}.metrics{gap:10px}.item:not(:has(input[type=checkbox])){display:grid;grid-template-columns:1fr 1fr;gap:8px}.item:not(:has(input[type=checkbox]))>*{min-width:0;width:100%}.item:not(:has(input[type=checkbox])) .grow,.item:not(:has(input[type=checkbox])) .btn.del{grid-column:1/-1}.row>input{max-width:none!important;flex:1 1 100%}}
+@media print{body{background:#fff;color:#111}.topbar,.sidebar,.hero .row,.toast,.btn{display:none!important}.tab,.box,.hero{background:#fff;border-color:#ccc;color:#111}.tab.hidden{display:block!important}input,select,textarea{color:#111;background:#fff}}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+<div class="app">
+<header class="topbar">
+  <div class="brand"><b>✦ BIRTHDAY BLISS</b><div><div>Signature Celebration Planner</div></div></div>
+  <div class="row" style="margin:0">
+    <button class="btn" id="importBtn">↥ Restore backup</button>
+    <button class="btn" id="jsonBtn">↓ Export backup</button>
+    <button class="btn gold" id="saveBtn">Save my plan</button>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="eyebrow">The art of celebrating</div>
+  <h1>Make their day<br><em>unforgettable.</em></h1>
+  <p>A beautifully considered space for every kind of birthday, from a little one’s first candle to a once-in-a-lifetime milestone.</p>
+  <div class="row">
+    <button class="btn gold" id="startPlanning">✦ Start planning</button>
+    <button class="btn" id="pdfBtn">Download PDF</button>
+    <button class="btn" id="newPlan">＋ New celebration</button>
+  </div>
+  <div class="note">Your plan stays in this browser · Export a backup anytime</div>
+</section>
+
+<div class="layout">
+<aside class="sidebar"><nav class="nav" id="nav">
+  <button class="active" data-tab="overview">◈ Overview</button>
+  <button data-tab="details">♕ Birthday details</button>
+  <button data-tab="budget">◉ Budget &amp; expenses</button>
+  <button data-tab="guests">♧ Guest list</button>
+  <button data-tab="checklist">✓ Checklist</button>
+  <button data-tab="ideas">✧ Theme &amp; notes</button>
+  <button data-tab="saved">▣ Saved plans</button>
+</nav></aside>
+
+<main>
+<section class="tab" id="tab-overview">
+  <div class="head"><div><h2>Celebration overview</h2><div class="muted">Plans, priorities and progress at a glance.</div></div><span class="pill" id="pill">Ready when you are</span></div>
+  <div class="metrics">
+    <div class="box"><small>Estimated budget</small><strong id="mBudget">0</strong><div class="muted" id="mBudgetSub"></div></div>
+    <div class="box"><small>Guests</small><strong id="mGuests">0</strong><div class="muted" id="mGuestsSub"></div></div>
+    <div class="box"><small>Checklist</small><strong id="mTasks">0%</strong><div class="muted">Completed tasks</div></div>
+  </div>
+  <div class="split">
+    <div class="box" style="margin:0"><div class="eyebrow">The guest of honour</div><div class="ttl" id="ovTitle"></div><p class="muted" id="ovSummary"></p></div>
+    <div class="box" style="margin:0"><h3>Your next best steps</h3><div id="steps"></div></div>
+  </div>
+</section>
+
+<section class="tab hidden" id="tab-details">
+  <div class="head"><div><h2>Birthday details</h2><div class="muted">Start with the person and the feeling you want.</div></div></div>
+  <div class="grid2">
+    <div class="field"><label class="l" for="celebrant">Celebrant’s name</label><input id="celebrant" data-field="celebrant" placeholder="e.g. Amara"></div>
+    <div class="field"><label class="l" for="age">Age they’re turning</label><input id="age" data-field="age" type="number" min="0" max="120"></div>
+    <div class="field"><label class="l" for="date">Celebration date</label><input id="date" data-field="date" type="date"></div>
+    <div class="field"><label class="l" for="startTime">Start time</label><input id="startTime" data-field="startTime" type="time"></div>
+    <div class="field"><label class="l" for="ageGroup">Age group</label>
+      <select id="ageGroup" data-field="ageGroup"><option value="">Adult (default)</option><option value="toddler">Baby / toddler (0–3)</option><option value="kid">Child (4–12)</option><option value="teen">Teen (13–19)</option><option value="adult">Adult (20+)</option></select></div>
+    <div class="field"><label class="l" for="partySize">Expected guest count</label><input id="partySize" data-field="partySize" type="number" min="0"></div>
+    <div class="field"><label class="l" for="location">Venue / location</label><input id="location" data-field="location" placeholder="Home, garden, event hall…"></div>
+    <div class="field"><label class="l" for="style">Celebration style</label>
+      <select id="style" data-field="style"><option value="">Choose a style</option><option>Simple and intimate</option><option>Family gathering</option><option>Garden party</option><option>Luxury dinner</option><option>Kids party</option><option>Theme celebration</option></select></div>
+    <div class="field full"><label class="l" for="purpose">Special wishes &amp; accessibility notes</label><textarea id="purpose" data-field="purpose" placeholder="Dietary needs, mobility considerations, favourite themes…"></textarea></div>
+  </div>
+  <div class="split">
+    <div class="box"><h3>Luxury design profile</h3><div class="grid2">
+      <div class="field"><label class="l" for="signatureLook">Signature style look</label><input id="signatureLook" data-field="signatureLook" placeholder="e.g. Royal black velvet"></div>
+      <div class="field"><label class="l" for="hexCode">Premium accent</label><input id="hexCode" data-field="hexCode" placeholder="#D4AF37"></div>
+      <div class="field full"><label class="l" for="dressCode">Guest dress code</label><input id="dressCode" data-field="dressCode" placeholder="e.g. Monochrome white, cocktail formal"></div></div></div>
+    <div class="box"><h3>Strategic north star</h3><div class="field"><label class="l" for="designBrief">Mood objectives</label><textarea id="designBrief" data-field="designBrief" placeholder="The main feeling or design anchor for the day."></textarea></div></div>
+  </div>
+</section>
+
+<section class="tab hidden" id="tab-budget">
+  <div class="head"><div><h2>Budget &amp; expenses</h2><div class="muted">Give every expense a place before the day.</div></div><span class="pill" id="budgetPill">On track</span></div>
+  <div class="box" id="ledgerBox" style="margin:0">
+    <div class="grid2" style="margin-bottom:14px">
+      <div class="field"><label class="l" for="budgetLimit">Budget ceiling</label><input id="budgetLimit" data-field="budgetLimit" type="number" min="0"></div>
+      <div class="field"><label class="l" for="currency">Currency</label>
+        <select id="currency" data-field="currency"><option>NGN</option><option>USD</option><option>GBP</option><option>EUR</option><option>KES</option><option>GHS</option><option>ZAR</option></select></div>
+    </div>
+    <div class="grid2" style="margin-bottom:14px">
+      <div class="box" style="margin:0;text-align:center"><small>Total actual spend</small><strong class="alert" id="totalActual">0</strong></div>
+      <div class="box" style="margin:0;text-align:center"><small>Remaining balance</small><strong class="alert" id="remaining">0</strong></div>
+    </div>
+    <div class="muted" style="margin-bottom:8px">Item · Estimated · Actual</div>
+    <div id="ledgerRows"></div>
+    <div class="row"><button class="btn gold" data-add="ledger">＋ Add line item</button></div>
+  </div>
+</section>
+
+<section class="tab hidden" id="tab-guests">
+  <div class="head"><div><h2>Guest list</h2><div class="muted">Invitations, replies, dietary needs, gifts and thank-yous in one place.</div></div></div>
+  <div id="guestRows"></div>
+  <div class="row">
+    <input id="guestName" placeholder="Guest name" aria-label="Guest name" style="max-width:240px">
+    <input id="guestNote" placeholder="Dietary / note" aria-label="Dietary or note" style="max-width:220px">
+    <button class="btn gold" data-add="guests">＋ Add guest</button>
+  </div>
+</section>
+
+<section class="tab hidden" id="tab-checklist">
+  <div class="head"><div><h2>Planning checklist</h2><div class="muted">Small steps, beautifully organised.</div></div></div>
+  <div id="taskRows"></div>
+  <div class="row">
+    <input id="taskName" placeholder="Add a new task" aria-label="New task" style="max-width:380px">
+    <button class="btn gold" data-add="tasks">＋ Add task</button>
+    <button class="btn" id="starter">Use starter checklist</button>
+  </div>
+  <div class="box"><h3>Adaptive timeline</h3><div id="timeline"></div>
+    <div class="row"><button class="btn" data-add="timelineCustom">＋ Add milestone</button></div></div>
+</section>
+
+<section class="tab hidden" id="tab-ideas">
+  <div class="head"><div><h2>Theme &amp; inspiration</h2><div class="muted">The little details that make the day theirs.</div></div></div>
+  <div class="grid2">
+    <div class="field"><label class="l" for="paletteNotes">Theme, colours &amp; inspiration</label><textarea id="paletteNotes" data-field="paletteNotes"></textarea></div>
+    <div class="field"><label class="l" for="notes">Extra notes</label><textarea id="notes" data-field="notes" placeholder="Food, music, decor, surprises…"></textarea></div>
+  </div>
+  <div class="box"><h3>Day-of command</h3>
+    <div class="field" style="margin-bottom:12px"><label class="l" for="leadAdvocate">Day-of lead</label><input id="leadAdvocate" data-field="leadAdvocate" placeholder="Coordinator or trusted friend"></div>
+    <div id="vendorRows"></div>
+    <div class="row"><button class="btn gold" data-add="vendors">＋ Add vendor or helper</button></div></div>
+  <div class="box"><h3>Venue flow audits</h3>
+    <label class="item"><input type="checkbox" data-flow="arrival"><div><div class="phase">Arrival</div>Parking, signage and greeting desk verified.</div></label>
+    <label class="item"><input type="checkbox" data-flow="backdrop"><div><div class="phase">Photo backdrop</div>Backdrops and lighting ready.</div></label>
+    <label class="item"><input type="checkbox" data-flow="weather"><div><div class="phase">Weather contingency</div>Tents or indoor alternatives prepared.</div></label></div>
+</section>
+
+<section class="tab hidden" id="tab-saved">
+  <div class="head"><div><h2>Saved celebrations</h2><div class="muted">Return to a plan, start fresh, or remove a draft.</div></div><button class="btn gold" id="newPlan2">＋ New celebration</button></div>
+  <div id="savedRows"></div>
+</section>
+</main>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+</div>
+<input type="file" id="importFile" accept="application/json" hidden>
+
+<script>
+(function(){
+const SK='birthdayBlissPlans_v3',AK='birthdayBlissActive_v3';
+const $=id=>document.getElementById(id);
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const rd=k=>{try{return localStorage.getItem(k)}catch(e){return null}};
+const wr=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
+const LISTS=['ledger','guests','tasks','vendors','timelineCustom'];
+const TPL={
+ toddler:[['6 months out','Lock child-friendly venues and check soft-play safety.'],['3 months out','Book cake, photographer and a short, nap-friendly schedule.'],['1 month out','Confirm baby-proofing, high chairs and quiet corners.'],['1 week out','Finalise pureed food options, smash-cake staging and nap blocks.'],['Day of','Keep it short and gentle, with easy comfort breaks.']],
+ kid:[['6 months out','Choose a high-energy venue with games and space to run.'],['3 months out','Book entertainers and decide the cake design.'],['1 month out','Order balloons, party bags and send invitations.'],['1 week out','Plan safe-zone supervision and a parents’ lounge.'],['Day of','Set up the gift table and keep activity timings tight.']],
+ teen:[['6 months out','Choose a trend-forward venue or private dining section.'],['3 months out','Book DJ or sound system and a photo backdrop.'],['1 month out','Curate the playlist and send invitations.'],['1 week out','Agree privacy boundaries with light adult oversight.'],['Day of','Run the mocktail bar and quick photo sharing.']],
+ adult:[['6 months out','Secure the venue and key vendors.'],['3 months out','Finalise the menu and drinks pairings.'],['1 month out','Send invitations and lock live music or entertainment.'],['1 week out','Confirm seating, VIP list and final headcount.'],['Day of','Share the master schedule with every vendor at hour zero.']]
+};
+const blank=()=>({id:uid(),title:'Untitled birthday plan',createdAt:new Date().toISOString(),updatedAt:new Date().toISOString(),
+ celebrant:'',age:'',date:'',startTime:'',ageGroup:'',partySize:'',location:'',style:'',purpose:'',hexCode:'#D4AF37',signatureLook:'',dressCode:'',designBrief:'',paletteNotes:'',notes:'',leadAdvocate:'',
+ budgetLimit:500000,currency:'NGN',ledger:[],guests:[],tasks:[],vendors:[],timelineChecks:{},timelineCustom:[],flow:{arrival:false,backdrop:false,weather:false}});
+let plans=[],plan;
+
+function toast(m){const t=$('toast');t.textContent=m;t.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove('show'),2400)}
+function money(v){try{return new Intl.NumberFormat(undefined,{style:'currency',currency:plan.currency||'NGN',maximumFractionDigits:0}).format(Number(v)||0)}catch(e){return(Number(v)||0).toLocaleString()}}
+function normalise(p){const b=blank(),o={...b,...p};
+ LISTS.forEach(k=>{o[k]=(Array.isArray(o[k])?o[k]:[]).map(x=>typeof x==='string'?{id:uid(),text:x}:{id:uid(),...x})});
+ o.timelineChecks=(o.timelineChecks&&typeof o.timelineChecks==='object')?o.timelineChecks:{};
+ o.flow={...b.flow,...(o.flow||{})};
+ if(!TPL[o.ageGroup])o.ageGroup='';
+ if(!o.id)o.id=uid();return o}
+function persist(silent=true){plan.updatedAt=new Date().toISOString();plan.title=plan.celebrant?plan.celebrant+'’s birthday':'Untitled birthday plan';
+ const i=plans.findIndex(p=>p.id===plan.id);if(i>=0)plans[i]=plan;else plans.push(plan);
+ wr(SK,JSON.stringify(plans));wr(AK,plan.id);if(!silent)toast('Plan saved')}
+function load(){let a=[];try{a=JSON.parse(rd(SK)||'[]')}catch(e){}
+ plans=(Array.isArray(a)?a:[]).filter(p=>p&&typeof p==='object').map(normalise);
+ const id=rd(AK);plan=plans.find(p=>p.id===id)||plans[plans.length-1];
+ if(!plan){plan=blank();plans.push(plan)}
+ hydrate()}
+function hydrate(){
+ document.querySelectorAll('[data-field]').forEach(el=>{const v=plan[el.dataset.field];el.value=v==null?'':v});
+ document.querySelectorAll('[data-flow]').forEach(el=>{el.checked=!!plan.flow[el.dataset.flow]});
+ renderAll()}
+
+function switchTab(t){document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('hidden',x.id!=='tab-'+t));
+ document.querySelectorAll('#nav button').forEach(x=>x.classList.toggle('active',x.dataset.tab===t))}
+
+const inp=(l,id,f,v,ph,type,cls)=>`<input class="${cls||''}" type="${type||'text'}" value="${esc(v)}" placeholder="${esc(ph)}" aria-label="${esc(ph)}" data-l="${l}" data-id="${id}" data-f="${f}">`;
+const del=(l,id)=>`<button class="btn del" type="button" aria-label="Remove" data-del="${l}:${id}">✕</button>`;
+const empty=m=>`<div class="empty">${m}</div>`;
+
+function renderLedger(){const c=$('ledgerRows');
+ c.innerHTML=plan.ledger.length?plan.ledger.map(x=>`<div class="item">${inp('ledger',x.id,'name',x.name,'Expense','text','grow')}${inp('ledger',x.id,'estimated',x.estimated,'Estimated','number')}${inp('ledger',x.id,'actual',x.actual,'Actual','number')}${del('ledger',x.id)}</div>`).join(''):empty('No expenses yet. Start with venue, food, cake or decor.');
+ calc()}
+function renderGuests(){const c=$('guestRows');
+ c.innerHTML=plan.guests.length?plan.guests.map(g=>`<div class="item">${inp('guests',g.id,'name',g.name,'Guest name','text','grow')}
+ <select aria-label="RSVP" data-l="guests" data-id="${g.id}" data-f="rsvp">${['pending','confirmed','declined'].map(s=>`<option value="${s}"${g.rsvp===s?' selected':''}>${s[0].toUpperCase()+s.slice(1)}</option>`).join('')}</select>
+ ${inp('guests',g.id,'notes',g.notes,'Dietary / notes')}${inp('guests',g.id,'gift',g.gift,'Gift')}
+ <select aria-label="Thank-you" data-l="guests" data-id="${g.id}" data-f="thankYou" data-bool="1"><option value="false"${g.thankYou?'':' selected'}>Not thanked</option><option value="true"${g.thankYou?' selected':''}>Thanked</option></select>${del('guests',g.id)}</div>`).join(''):empty('Your guest list begins here. Add a name below.')}
+function renderTasks(){const c=$('taskRows');
+ c.innerHTML=plan.tasks.length?plan.tasks.map(t=>`<div class="item"><input type="checkbox" aria-label="Done" data-l="tasks" data-id="${t.id}" data-f="done"${t.done?' checked':''}><div class="txt">${esc(t.name)}</div>${del('tasks',t.id)}</div>`).join(''):empty('Add a task, or load the starter checklist.')}
+function renderVendors(){const c=$('vendorRows');
+ c.innerHTML=plan.vendors.length?plan.vendors.map(v=>`<div class="item">${inp('vendors',v.id,'assignment',v.assignment,'Role (DJ, cake…)')}${inp('vendors',v.id,'identity',v.identity,'Vendor name')}${inp('vendors',v.id,'contact',v.contact,'Phone / contact')}${del('vendors',v.id)}</div>`).join(''):empty('No vendor or helper assigned yet.')}
+function renderTimeline(){const t=TPL[plan.ageGroup]||TPL.adult,ch=plan.timelineChecks;
+ $('timeline').innerHTML=t.map((x,i)=>`<label class="item"><input type="checkbox" data-tl="t${i}"${ch['t'+i]?' checked':''}><div><div class="phase">${x[0]}</div>${x[1]}</div></label>`).join('')+
+ plan.timelineCustom.map(c=>`<div class="item"><input type="checkbox" aria-label="Done" data-tl="c${c.id}"${ch['c'+c.id]?' checked':''}><div class="txt"><div class="phase">Custom milestone</div>${inp('timelineCustom',c.id,'text',c.text,'Milestone')}</div>${del('timelineCustom',c.id)}</div>`).join('')}
+function renderSaved(){$('savedRows').innerHTML=plans.map(p=>`<div class="saved"><div><strong>${esc(p.title||'Untitled celebration')}</strong><br><span>${esc(p.date||'No date chosen')} · ${esc(p.celebrant||'No celebrant named')}</span></div><div class="row" style="margin:0"><button class="btn" data-open="${p.id}">Open</button><button class="btn del" data-delplan="${p.id}">Delete</button></div></div>`).join('')}
+
+function calc(){const limit=Number(plan.budgetLimit)||0,actual=plan.ledger.reduce((s,x)=>s+(Number(x.actual)||0),0),rem=limit-actual;
+ $('totalActual').textContent=money(actual);$('remaining').textContent=money(rem);
+ $('ledgerBox').classList.toggle('over',actual>limit);$('budgetPill').textContent=actual>limit?'Over budget':'On track'}
+function renderOverview(){
+ const est=plan.ledger.reduce((s,x)=>s+(Number(x.estimated)||0),0),act=plan.ledger.reduce((s,x)=>s+(Number(x.actual)||0),0);
+ const done=plan.tasks.filter(t=>t.done).length,pct=plan.tasks.length?Math.round(done/plan.tasks.length*100):0;
+ const conf=plan.guests.filter(g=>g.rsvp==='confirmed').length;
+ $('mBudget').textContent=money(est);$('mBudgetSub').textContent='Actual so far: '+money(act);
+ $('mGuests').textContent=plan.guests.length;$('mGuestsSub').textContent=conf+' confirmed'+(plan.partySize?' · '+plan.partySize+' expected':'');
+ $('mTasks').textContent=pct+'%';
+ $('ovTitle').textContent=plan.celebrant?plan.celebrant+(plan.age?' turning '+plan.age:''):'A special day starts with a dream.';
+ $('ovSummary').textContent=(plan.designBrief||'A beautifully considered celebration rooted in joy, ease and meaningful details.')+(plan.style?' · '+plan.style:'');
+ const s=[];
+ if(!plan.date)s.push('Pick the celebration date and lock the venue.');
+ if(!(Number(plan.budgetLimit)>0))s.push('Set a realistic budget ceiling.');
+ if(!plan.guests.length)s.push('Start your guest list with the must-have people.');
+ if(!plan.paletteNotes&&!plan.notes)s.push('Capture the theme and colours that make it personal.');
+ if(!s.length)s.push('Your plan is taking shape. Keep checking off priorities.');
+ $('steps').innerHTML=s.slice(0,3).map(x=>`<div class="step">${x}</div>`).join('');
+ $('pill').textContent=pct>=70?'Almost there':pct>=40?'In motion':'Ready when you are'}
+function renderAll(){renderOverview();renderLedger();renderGuests();renderTasks();renderVendors();renderTimeline();renderSaved()}
+function refresh(){renderOverview();calc()}
+
+const STARTER=['Choose a date and venue','Set a realistic budget','Create the guest list','Choose a theme and colours','Plan food, drinks and cake','Arrange decorations and ambience','Confirm vendors and helpers','Send invitations'];
+
+function onEdit(e){const t=e.target,d=t.dataset;
+ if(d.field){let v=t.value;if(d.field==='budgetLimit')v=Number(v)||0;plan[d.field]=v;
+  if(d.field==='ageGroup')renderTimeline();if(d.field==='currency')renderAll()}
+ else if(d.flow){plan.flow[d.flow]=t.checked}
+ else if(d.tl){plan.timelineChecks[d.tl]=t.checked}
+ else if(d.l){const it=plan[d.l].find(x=>x.id===d.id);if(!it)return;let v=t.value;
+  if(t.type==='number')v=Number(v)||0;else if(t.type==='checkbox')v=t.checked;else if(d.bool)v=v==='true';
+  it[d.f]=v;if(d.l==='tasks'||d.f==='rsvp')renderOverview()}
+ else return;
+ refresh();persist()}
+document.addEventListener('input',onEdit);
+document.addEventListener('change',e=>{if(e.target.tagName==='SELECT'||e.target.type==='checkbox'||e.target.type==='date'||e.target.type==='time')onEdit(e)});
+
+document.addEventListener('click',e=>{
+ const b=e.target.closest('button');if(!b)return;const d=b.dataset;
+ if(d.tab)return switchTab(d.tab);
+ if(d.add){const l=d.add;
+  if(l==='ledger')plan.ledger.push({id:uid(),name:'',estimated:0,actual:0});
+  else if(l==='vendors')plan.vendors.push({id:uid(),assignment:'',identity:'',contact:''});
+  else if(l==='timelineCustom')plan.timelineCustom.push({id:uid(),text:'New milestone'});
+  else if(l==='guests'){const n=$('guestName').value.trim();if(!n)return toast('Enter a guest name first.');
+   plan.guests.push({id:uid(),name:n,notes:$('guestNote').value.trim(),rsvp:'pending',gift:'',thankYou:false});$('guestName').value='';$('guestNote').value=''}
+  else if(l==='tasks'){const n=$('taskName').value.trim();if(!n)return toast('Add a task name first.');plan.tasks.push({id:uid(),name:n,done:false});$('taskName').value=''}
+  renderAll();return persist()}
+ if(d.del){const[l,id]=d.del.split(':');plan[l]=plan[l].filter(x=>x.id!==id);renderAll();return persist()}
+ if(d.open){const p=plans.find(x=>x.id===d.open);if(p){plan=p;wr(AK,p.id);hydrate();switchTab('overview')}return}
+ if(d.delplan){plans=plans.filter(x=>x.id!==d.delplan);
+  if(!plans.length)plans.push(blank());
+  if(!plans.some(x=>x.id===plan.id))plan=plans[plans.length-1];
+  hydrate();return persist()}
+});
+
+function newPlan(){persist();plan=blank();plans.push(plan);persist();hydrate();switchTab('details');toast('A new celebration plan is ready.')}
+async function saveFile(filename,data){
+ let dl=null;try{dl=window.claude&&await window.claude.use('downloads')}catch(e){}
+ if(!dl)return 'none';
+ try{await dl.save({filename,data});return 'ok'}catch(e){return e&&e.code==='declined'?'declined':'error'}}
+const slug=()=>((plan.celebrant||'birthday-bliss-plan').trim().replace(/[^\w-]+/g,'-').toLowerCase()||'birthday-bliss-plan');
+async function exportBackup(){persist();
+ const json=JSON.stringify({app:'Birthday Bliss',version:3,exportedAt:new Date().toISOString(),plan},null,2),name=slug()+'.json';
+ const r=await saveFile(name,json);
+ if(r==='ok')return toast('Backup exported.');
+ if(r==='declined')return toast('Download cancelled.');
+ if(r==='error')return toast('Download isn’t available right now.');
+ try{const u=URL.createObjectURL(new Blob([json],{type:'application/json'})),a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),2000);toast('Backup exported.')}catch(e){toast('Download isn’t available here.')}}
+async function exportPDF(){persist();
+ const J=window.jspdf&&window.jspdf.jsPDF;
+ if(!J){window.print();return}
+ const doc=new J({unit:'pt',format:'a4'}),W=doc.internal.pageSize.getWidth(),H=doc.internal.pageSize.getHeight(),M=48;let y=M;
+ const clean=s=>String(s==null?'':s).replace(/[^\x20-\x7E\u00A0-\u00FF\u2019]/g,'');
+ const line=(t,size,bold,col)=>{doc.setFont('helvetica',bold?'bold':'normal');doc.setFontSize(size);doc.setTextColor(...(col||[30,30,30]));
+  doc.splitTextToSize(clean(t),W-2*M).forEach(l=>{if(y+size+4>H-M){doc.addPage();y=M}doc.text(l,M,y+size);y+=size+4})};
+ const head=t=>{y+=10;line(t,13,true,[150,110,30])};
+ const mon=v=>(plan.currency||'NGN')+' '+(Number(v)||0).toLocaleString('en-US');
+ line(plan.title,22,true);
+ line([plan.date,plan.startTime,plan.location].filter(Boolean).join(' | ')||'Date and venue to be confirmed',10,false,[110,110,110]);
+ head('Details');
+ [['Celebrant',plan.celebrant],['Turning',plan.age],['Style',plan.style],['Expected guests',plan.partySize],['Dress code',plan.dressCode],['Signature look',plan.signatureLook],['Accent colour',plan.hexCode],['Day-of lead',plan.leadAdvocate]].forEach(r=>{if(r[1])line(r[0]+': '+r[1],10)});
+ [['Mood',plan.designBrief],['Theme and colours',plan.paletteNotes],['Special wishes',plan.purpose],['Notes',plan.notes]].forEach(r=>{if(r[1])line(r[0]+': '+r[1],10)});
+ const est=plan.ledger.reduce((s,x)=>s+(Number(x.estimated)||0),0),act=plan.ledger.reduce((s,x)=>s+(Number(x.actual)||0),0);
+ head('Budget');
+ line('Ceiling: '+mon(plan.budgetLimit)+' | Estimated: '+mon(est)+' | Actual: '+mon(act)+' | Remaining: '+mon((Number(plan.budgetLimit)||0)-act),10,true);
+ plan.ledger.forEach(x=>line('- '+(x.name||'Item')+': est. '+mon(x.estimated)+', actual '+mon(x.actual),10));
+ head('Guests ('+plan.guests.length+')');
+ if(!plan.guests.length)line('No guests added yet.',10);
+ plan.guests.forEach(g=>line('- '+(g.name||'Guest')+' ['+g.rsvp+']'+(g.notes?' - '+g.notes:'')+(g.gift?' | gift: '+g.gift:'')+(g.thankYou?' | thanked':''),10));
+ head('Checklist');
+ if(!plan.tasks.length)line('No tasks yet.',10);
+ plan.tasks.forEach(t=>line((t.done?'[x] ':'[ ] ')+t.name,10));
+ head('Timeline');
+ (TPL[plan.ageGroup]||TPL.adult).forEach((x,i)=>line((plan.timelineChecks['t'+i]?'[x] ':'[ ] ')+x[0]+': '+x[1],10));
+ plan.timelineCustom.forEach(c=>line((plan.timelineChecks['c'+c.id]?'[x] ':'[ ] ')+(c.text||''),10));
+ if(plan.vendors.length){head('Vendors and helpers');plan.vendors.forEach(v=>line('- '+[v.assignment,v.identity,v.contact].filter(Boolean).join(' | '),10))}
+ const name=slug()+'.pdf',buf=doc.output('arraybuffer');
+ const r=await saveFile(name,buf);
+ if(r==='ok')return toast('PDF ready.');
+ if(r==='declined')return toast('Download cancelled.');
+ if(r==='error')return toast('Download isn’t available right now.');
+ doc.save(name)}
+function importBackup(e){const f=e.target.files&&e.target.files[0];if(!f)return;const r=new FileReader();
+ r.onload=()=>{try{const d=JSON.parse(r.result),inc=d&&d.plan?d.plan:d;
+  if(!inc||typeof inc!=='object'||Array.isArray(inc))throw new Error('bad');
+  if(!['celebrant','ledger','guests','tasks','date'].some(k=>k in inc))throw new Error('bad');
+  plan=normalise(inc);plans=plans.filter(p=>p.id!==plan.id);plans.push(plan);persist();hydrate();toast('Backup restored.')}
+  catch(err){toast('That file could not be restored.')}finally{e.target.value=''}};
+ r.readAsText(f)}
+
+$('saveBtn').onclick=()=>persist(false);
+$('startPlanning').onclick=()=>switchTab('details');
+$('pdfBtn').onclick=exportPDF;
+$('jsonBtn').onclick=exportBackup;
+$('importBtn').onclick=()=>$('importFile').click();
+$('importFile').onchange=importBackup;
+$('newPlan').onclick=newPlan;$('newPlan2').onclick=newPlan;
+$('starter').onclick=()=>{const have=plan.tasks.map(t=>t.name);STARTER.forEach(n=>{if(!have.includes(n))plan.tasks.push({id:uid(),name:n,done:false})});renderTasks();refresh();persist()};
+window.addEventListener('beforeunload',()=>{try{persist()}catch(e){}});
+
+load();switchTab('overview');
+})();
+</script>
+</body>
+</html>
