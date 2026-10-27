@@ -390,6 +390,14 @@ window.addEventListener('beforeunload',()=>{try{persist()}catch(e){}});
 
 load();switchTab('overview');
 })();
-<script src="app.js"></script>
+<script>
+  document.addEventListener('contextmenu', event => event.preventDefault());
+  document.onkeydown = function(e) {
+    if(e.keyCode == 123) return false; // Disables F12
+    if(e.ctrlKey && e.shiftKey && e.keyCode == 73) return false; // Disables Ctrl+Shift+I
+    if(e.ctrlKey && e.keyCode == 85) return false; // Disables Ctrl+U (View Source)
+  }
+</script>
+
 </body>
 </html>
